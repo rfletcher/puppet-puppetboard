@@ -1,0 +1,28 @@
+<VirtualHost *:<%= @port %>>
+  ServerName <%= @vhost_name %>
+  ServerAlias <%= @vhost_name %>.*
+
+  DocumentRoot "<%= @docroot %>"
+
+  <Directory "<%= @docroot %>">
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  ErrorLog "<%= @vhost_name %>_error.log"
+  ServerSignature Off
+  CustomLog "<%= @vhost_name %>_access.log" combined
+
+  <% if @user and @wsgi_daemon_process_options %>
+    WSGIDaemonProcess <%= @user %> <%= @wsgi_daemon_process_options.collect { |k,v| "#{k}=#{v}"}.sort.join(' ') %>
+  <% end %>
+  WSGIProcessGroup <%= @group %>
+
+  <% if @wsgi_script_aliases %>
+    <% @wsgi_script_aliases.each do |k,v| %>
+      WSGIScriptAlias <%= k %> "<%= v %>"
+    <% end %>
+  <% end %>
+</VirtualHost>
