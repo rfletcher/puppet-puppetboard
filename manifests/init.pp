@@ -151,13 +151,15 @@ class puppetboard(
     require  => Exec["create $basedir"],
   }
 
+  include git
+
   vcsrepo { "${basedir}/puppetboard":
     ensure   => present,
     provider => 'git',
     owner    => $user,
     source   => $git_source,
     revision => $revision,
-    require  => [Exec["create ${basedir}"], User[$user]],
+    require  => [Class['git'], Exec["create ${basedir}"], User[$user]],
   }
 
   file { "${basedir}/puppetboard":
