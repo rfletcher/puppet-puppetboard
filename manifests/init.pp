@@ -120,10 +120,10 @@ class puppetboard(
   $python_proxy      = $::puppetboard::params::python_proxy,
   $experimental      = $::puppetboard::params::experimental,
   $revision          = $::puppetboard::params::revision,
-  $manage_git        = false,
-  $manage_virtualenv = false,
 
 ) inherits ::puppetboard::params {
+  include git
+  include python
 
   group { $group:
     ensure => present,
@@ -151,15 +151,17 @@ class puppetboard(
     require  => Exec["create $basedir"],
   }
 
-  include git
-
   vcsrepo { "${basedir}/puppetboard":
     ensure   => present,
     provider => 'git',
     owner    => $user,
     source   => $git_source,
     revision => $revision,
-    require  => [Class['git'], Exec["create ${basedir}"], User[$user]],
+    require  => [
+      Class['git'],
+      Exec["create ${basedir}"],
+      User[$user]
+    ],
   }
 
   file { "${basedir}/puppetboard":
@@ -214,18 +216,6 @@ class puppetboard(
         File["${basedir}/puppetboard"],
         Python::Virtualenv["${basedir}/virtenv-puppetboard"]
       ],
-    }
-  }
-
-  if $manage_git {
-    package {'git':
-      ensure => $manage_git,
-    }
-  }
-
-  if $manage_virtualenv {
-    package { $::puppetboard::params::virtualenv:
-      ensure => installed,
     }
   }
 
