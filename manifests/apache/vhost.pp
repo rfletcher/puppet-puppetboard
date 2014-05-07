@@ -40,7 +40,6 @@ class puppetboard::apache::vhost (
   $group    = $::puppetboard::params::group,
   $basedir  = $::puppetboard::params::basedir,
 ) inherits ::puppetboard::params {
-
   $docroot = "${basedir}/puppetboard"
 
   $wsgi_script_aliases = {
@@ -76,6 +75,8 @@ class puppetboard::apache::vhost (
       notify                      => Service[$::puppetboard::params::apache_service],
     }
   } else {
+    include apache::modules::wsgi
+
     ::apache::vhost { $vhost_name:
       content  => template('puppetboard/apache/vhost.erb'),
       require  => File["${docroot}/wsgi.py"],
