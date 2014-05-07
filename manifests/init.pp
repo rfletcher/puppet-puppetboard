@@ -138,11 +138,17 @@ class puppetboard(
     require    => Group[$group],
   }
 
+  exec { "create $basedir":
+    command => "mkdir -p ${basedir}",
+    creates => $basedir,
+  }
+
   file { $basedir:
     ensure   => 'directory',
     owner    => $user,
     group    => $group,
     mode     => '0755',
+    require  => Exec["create $basedir"],
   }
 
   vcsrepo { "${basedir}/puppetboard":
@@ -151,7 +157,7 @@ class puppetboard(
     owner    => $user,
     source   => $git_source,
     revision => $revision,
-    require  => User[$user],
+    require  => [Exec["create $basedir"], User[$user]],
   }
 
   file { "${basedir}/puppetboard":
