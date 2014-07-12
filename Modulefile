@@ -1,5 +1,5 @@
 name 'nibalizer-puppetboard'
-version '1.3.0'
+version '2.5.0'
 author 'Spencer Krum'
 description 'Install and configure PuppetBoard'
 summary 'Install and configure PuppetBoard'
