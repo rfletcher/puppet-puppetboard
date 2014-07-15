@@ -65,7 +65,7 @@ class puppetboard::apache::vhost (
     content => template('puppetboard/wsgi.py.erb'),
     owner   => $user,
     group   => $group,
-    require => [Exec["create ${basedir}"], User[$user]],
+    require => [Vcsrepo[$docroot], User[$user]],
   }
 
   if $apache_provider == 'puppetlabs' {
