@@ -48,3 +48,8 @@ PUPPETDB_EXPERIMENTAL = False
 <% if @reports_count -%>
 REPORTS_COUNT = <%= @reports_count %>
 <% end -%>
+<% if @ignore_unreported -%>
+IGNORE_UNREPORTED = '<%= @ignore_unreported %>'
+<% else -%>
+IGNORE_UNREPORTED = None
+<% end -%>

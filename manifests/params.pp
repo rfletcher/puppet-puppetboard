@@ -39,4 +39,5 @@ class puppetboard::params {
   $experimental = false
   $revision = undef
   $virtualenv = 'python-virtualenv'
+  $ignore_unreported = undef
 }

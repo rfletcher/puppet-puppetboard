@@ -121,6 +121,7 @@ class puppetboard(
   $experimental      = $::puppetboard::params::experimental,
   $revision          = $::puppetboard::params::revision,
   $reports_count     = $::puppetboard::params::reports_count,
+  $ignore_unreported = $::puppetboard::params::ignore_unreported,
 
 ) inherits ::puppetboard::params {
   validate_bool($enable_query)
